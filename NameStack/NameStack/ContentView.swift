@@ -14,6 +14,11 @@ enum MainDestination: Hashable {
     case friendCards
     case settings
     case qrCode(UIImage)
+    
+    case account
+    case updateInfo
+    
+    case edit
 }
 
 enum TabbedItems: Int, CaseIterable{
@@ -77,12 +82,19 @@ struct ContentView: View {
                     case .categoryTag:
                         CategoryTag(isSidebarVisible: $isSidebarVisible, path: $path, isTabBarVisible: $isTabBarVisible, selectedTab: $selectedTab)
                     case .friendCards:
-                        FriendCards(isSidebarVisible: $isSidebarVisible, path: $path, isTabBarVisible: $isTabBarVisible, selectedTab: $selectedTab)
+                        FriendNameCard_list(isSidebarVisible: $isSidebarVisible, path: $path, isTabBarVisible: $isTabBarVisible, selectedTab: $selectedTab)
                     case .settings:
                         Settings(isSidebarVisible: $isSidebarVisible, path: $path, isTabBarVisible: $isTabBarVisible, selectedTab: $selectedTab)
                             .transition(.move(edge: .leading))
                     case .qrCode(let qrImage):
                         QRCode(qrImage: qrImage, path: $path, isTabBarVisible: $isTabBarVisible, selectedTab:$selectedTab)
+                        
+                    case .account:
+                        Account(isSidebarVisible: $isSidebarVisible, path:$path, isTabBarVisible: $isTabBarVisible, selectedTab: $selectedTab)
+                    case .updateInfo:
+                        UpdateInfo(isSidebarVisible: $isSidebarVisible, path:$path, isTabBarVisible: $isTabBarVisible, selectedTab:$selectedTab)
+                    case .edit:
+                        FriendNameCard_edit(path:$path, isTabBarVisible: $isTabBarVisible, selectedTab: $selectedTab)
                     }
                 }
                 
@@ -130,7 +142,7 @@ struct ContentView: View {
         
         .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification)) { _ in
             withAnimation {
-                if(selectedTab == 1&&isSidebarVisible==false){
+                if((selectedTab == 1||selectedTab==0)&&isSidebarVisible==false){
                     isTabBarVisible = true}//키보드 내려가면 탭 바 다시 생기게. but 사이드바 열릴 때는 탭 바 안 보이게
             }
         }

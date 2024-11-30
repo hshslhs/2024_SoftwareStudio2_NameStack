@@ -7,11 +7,14 @@
 
 import SwiftUI
 
+
+/*
 enum SettingsDestination: Hashable {
     case account
     case updateInfo
 }
 
+*/
 struct Settings: View {
     @Binding var isSidebarVisible: Bool
     @Binding var path: NavigationPath
@@ -61,9 +64,9 @@ struct Settings: View {
                         .frame(height:60)
                     
                     Button(action: {
-                        path.append(SettingsDestination.account)
-                        isSidebarVisible = false
-                        selectedTab=2//탭 뷰 안 보이게 하기 위한 코드. 필요에 따라 숫자 변경 가능
+                        //path.append(MainDestination.account)
+                        //isSidebarVisible = false
+                        //selectedTab=2//탭 뷰 안 보이게 하기 위한 코드. 필요에 따라 숫자 변경 가능
                     }) {
                         Text("계정 및 개인 정보")
                             .font(.system(size: 30))
@@ -73,9 +76,9 @@ struct Settings: View {
                     }
 
                     Button(action: {
-                        path.append(SettingsDestination.updateInfo)
-                        isSidebarVisible = false
-                        selectedTab=2//탭 뷰 안 보이게 하기 위한 코드. 필요에 따라 숫자 변경 가능
+                        //path.append(MainDestination.updateInfo)
+                        //isSidebarVisible = false
+                        //selectedTab=2//탭 뷰 안 보이게 하기 위한 코드. 필요에 따라 숫자 변경 가능
                     }) {
                         Text("업데이트 정보")
                             .font(.system(size: 30))
@@ -87,6 +90,8 @@ struct Settings: View {
                 
                     Spacer()
                 }
+                
+                /*
                 .navigationDestination(for: SettingsDestination.self) { destination in
                     switch destination {
                     case .account:
@@ -95,7 +100,7 @@ struct Settings: View {
                         UpdateInfo(isSidebarVisible: $isSidebarVisible, path:$path, isTabBarVisible: $isTabBarVisible, selectedTab:$selectedTab)
                     }
                 }
-
+*/
             }
             .navigationBarBackButtonHidden(true)
         
