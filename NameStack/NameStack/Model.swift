@@ -17,7 +17,7 @@ class Card {
     var mail: String
     var position: String
     var memo: String
-    @Relationship(deleteRule: .nullify, inverse: \NameTag.post)
+    @Relationship(deleteRule: .nullify)
     var comments: [NameTag] = [NameTag]()
     var createdAt: Date
 
@@ -38,14 +38,11 @@ class NameTag {
     @Attribute(.unique)
     var id: UUID
     var name: String
-    var color: Color
-    
-    @Relationship
-    var post: Card?
-  
-    init(id: UUID = UUID(), content: String) {
+    var color: String
+
+    init(id: UUID = UUID(), content: String, color : String) {
         self.id = id
         self.name = content
-        self.color = Color.white
+        self.color = color
     }
 }
