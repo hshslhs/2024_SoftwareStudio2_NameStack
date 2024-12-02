@@ -7,21 +7,24 @@
 
 import SwiftUI
 import UIKit
+import SwiftData
 
 struct LoopingScrollView: View {
+    @Environment(\.modelContext) private var modelContext
+    @Query private var cards: [Card]
     var body: some View {
             ScrollView( showsIndicators: false) {
                 RoundedRectangle(cornerRadius: 15)
                     .frame(width : 240, height : 250)
                     .opacity(0)
                 LazyVStack{
-                    ForEach(0..<100) { index in
+                    ForEach(cards) { card in
                         GeometryReader { geometry in
                             RoundedRectangle(cornerRadius: 15)
                                 .fill(.white)
                                 .stroke(Color.black, lineWidth: 2)
                                 .shadow(radius: 10)
-                                .overlay(Text("\(index)").bold().font(.system(size:100)))
+                                .overlay(Text("\(card.name)").bold().font(.system(size:100)))
                                 //.offset( y: -200*(1-getPercentage(geo: geometry)))
                                 .frame(width : 240, height : 377)
                                 //.opacity(getPercentage(geo: geometry)*getPercentage(geo: geometry))
