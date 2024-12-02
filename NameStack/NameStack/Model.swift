@@ -22,8 +22,8 @@ class Card {
     var createdAt: Date
 
 
-    init(id: UUID = UUID(), name: String, phoneNumber: String, mail: String, position: String, memo: String) {
-        self.id = id
+    init(name: String, phoneNumber: String, mail: String, position: String, memo: String) {
+        self.id = UUID()
         self.name = name
         self.phoneNumber = phoneNumber
         self.mail = mail
