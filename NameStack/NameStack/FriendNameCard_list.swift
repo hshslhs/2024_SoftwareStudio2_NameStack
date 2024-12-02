@@ -8,11 +8,6 @@
 import SwiftUI
 import UIKit
 
-/*
-enum Destination: Hashable {
-    case edit
-}
-*/
 struct FriendNameCard_list: View {
     @Binding var isSidebarVisible: Bool
     @Binding var path: NavigationPath
@@ -20,17 +15,7 @@ struct FriendNameCard_list: View {
     @Binding var selectedTab: Int
     
     @State private var searchText: String = "Search.."
-    //@State private var showFullScreen = false
-    
-    
-    /*var filteredCards: [BusinessCard] {
-     if searchText.isEmpty {
-     return viewModel.cards
-     } else {
-     return viewModel.cards.filter { $0.name.contains(searchText) }
-     }
-     }*/
-    
+
     var body: some View {
         ZStack() {
             Color.black.edgesIgnoringSafeArea(.all)
@@ -71,8 +56,6 @@ struct FriendNameCard_list: View {
             .position(x: UIScreen.main.bounds.width-50, y: 20);
             
             VStack(){
-                
-                
                 Spacer() .frame(height: 90)
                 HStack(){
                     Spacer() .frame(width: 5)
@@ -125,7 +108,7 @@ struct FriendNameCard_list: View {
                     Spacer() .frame(width: 30)
                     
                     Button(action: {
-                        //plus click -> add namecard
+                        withAnimation{ path.append(MainDestination.edit)}
                     }){
                         Image("plus")
                             .alignmentGuide(.trailing) { d in d[.trailing] - 50 }
@@ -136,6 +119,7 @@ struct FriendNameCard_list: View {
                 ScrollView{
                     VStack(){
                         //card
+                        //임시로 가상 데이터 들어가있는 상태
                         ZStack() {
                             Rectangle()
                                 .foregroundColor(.clear)
@@ -160,7 +144,6 @@ struct FriendNameCard_list: View {
                                 Button(action: {
                                     withAnimation{ path.append(MainDestination.edit)}
                                     
-                                    //  showFullScreen.toggle()
                                 }) {
                                     Image("Arrow2")
                                         .foregroundColor(.white)
@@ -172,8 +155,7 @@ struct FriendNameCard_list: View {
                             }.padding(.leading, 280)
                         }.padding(.top, 20)
                             .frame(width: 330, height: 93)
-                        /* .fullScreenCover(isPresented: $showFullScreen) {
-                         FriendNameCard_edit() // 풀스크린으로 표시될 화면;*/
+
                     }.padding(.vertical)
                 }
                 .offset(x:0, y:43)
@@ -181,17 +163,6 @@ struct FriendNameCard_list: View {
             
             
         }.onTapGesture{dismissKeyboard()}
-        
-        /*
-        .navigationDestination(for: Destination.self) { destination in
-            switch destination {
-            case .edit:
-                FriendNameCard_edit(path:$path, isTabBarVisible: $isTabBarVisible, selectedTab: $selectedTab)
-            }
-        
-                
-        }*/
-        //.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         
         .navigationBarBackButtonHidden(true)
     }
