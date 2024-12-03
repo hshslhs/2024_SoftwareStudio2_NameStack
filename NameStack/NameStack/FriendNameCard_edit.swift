@@ -119,6 +119,13 @@ struct FriendNameCard_edit: View {
                             .padding(.bottom,15)
                         
                         VStack(spacing: 15) {
+                            Button(action:{
+                                withAnimation{ path.append(MainDestination.editTag)}
+                            }){
+                                Rectangle()
+                                    .foregroundColor(.blue)
+                                    .frame(width: 20, height: 20)
+                            }
                             CustomTextField(title: "이름", text: $name)
                             CustomTextField(title: "소속", text: $organization)
                             CustomTextField(title: "전화번호", text: $phoneNumber, keyboardType: .phonePad)
