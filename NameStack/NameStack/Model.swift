@@ -15,19 +15,23 @@ class Card {
     var name: String
     var phoneNumber: String
     var mail: String
-    var position: String
+    var organization: String
+    var school: String
+    var URL: String
     var memo: String
     @Relationship(deleteRule: .nullify)
-    var comments: [NameTag] = [NameTag]()
+    var tags: [NameTag] = [NameTag]()
     var createdAt: Date
 
 
-    init(name: String, phoneNumber: String, mail: String, position: String, memo: String) {
+    init(name: String, phoneNumber: String, mail: String, organization: String, school: String, URL: String, memo: String) {
         self.id = UUID()
         self.name = name
         self.phoneNumber = phoneNumber
         self.mail = mail
-        self.position = position
+        self.organization = organization
+        self.school = school
+        self.URL = URL
         self.memo = memo
         self.createdAt = Date.now
     }
