@@ -22,6 +22,11 @@ struct DataScannerRepresentable: UIViewControllerRepresentable {
 
     var dataToScanFor: Set<DataScannerViewController.RecognizedDataType>
     
+    func parseQrText()-> Card{
+        let scannedCard = Card(name: "",phoneNumber: "",mail: "",position: "",memo: "")
+        return scannedCard;
+    }
+    
     class Coordinator: NSObject, DataScannerViewControllerDelegate {
        var parent: DataScannerRepresentable
        
