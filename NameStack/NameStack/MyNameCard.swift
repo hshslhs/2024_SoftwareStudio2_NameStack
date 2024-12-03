@@ -7,6 +7,7 @@
 
 import SwiftUI
 import CoreImage.CIFilterBuiltins
+import SwiftData
 
 
 struct Constants {
@@ -14,6 +15,11 @@ struct Constants {
 }
 
 struct MyNameCard: View {
+    @Environment(\.modelContext) private var modelContext
+    @Query(filter: #Predicate<Card> {
+        $0.id == UUID(uuidString: "00000000-0000-0000-0000-000000000000")
+      }) private var cards: [Card]
+    
     @State private var name: String = ""
     @State private var organization: String = ""
     @State private var phoneNumber: String = ""
@@ -34,8 +40,6 @@ struct MyNameCard: View {
     
     
     var body: some View {
-        
-        
         ZStack {
             Color.black
                 .edgesIgnoringSafeArea(.all)
@@ -214,25 +218,38 @@ struct MyNameCard: View {
     }
     // 데이터 저장 함수
     private func saveData() {
-        UserDefaults.standard.set(name, forKey: "name")
-        UserDefaults.standard.set(organization, forKey: "organization")
-        UserDefaults.standard.set(phoneNumber, forKey: "phoneNumber")
-        UserDefaults.standard.set(email, forKey: "email")
-        UserDefaults.standard.set(school, forKey: "school")
-        UserDefaults.standard.set(url, forKey: "url")
-        UserDefaults.standard.set(memo, forKey: "memo")
+        if(!cards.isEmpty){
+            cards[0].name = name
+            cards[0].organization = organization
+            cards[0].phoneNumber = phoneNumber
+            cards[0].mail = email
+            cards[0].school = school
+            cards[0].URL = url
+            cards[0].memo = memo
+        }
+        else{
+            let newCard: Card = Card(id: UUID(uuidString: "00000000-0000-0000-0000-000000000000")!,name: name, phoneNumber: phoneNumber, mail: email, organization: organization, school: school, URL: url, memo: memo)
+            do {
+                modelContext.insert(newCard)
+            try modelContext.save()
+            } catch {
+              print("error")
+            }
+        }
         print("Data saved.")
     }
     
     // 데이터 로드 함수
     private func loadData() {
-        name = UserDefaults.standard.string(forKey: "name") ?? ""
-        organization = UserDefaults.standard.string(forKey: "organization") ?? ""
-        phoneNumber = UserDefaults.standard.string(forKey: "phoneNumber") ?? ""
-        email = UserDefaults.standard.string(forKey: "email") ?? ""
-        school = UserDefaults.standard.string(forKey: "school") ?? ""
-        url = UserDefaults.standard.string(forKey: "url") ?? ""
-        memo = UserDefaults.standard.string(forKey: "memo") ?? ""
+        if(!cards.isEmpty){
+            name = cards[0].name
+            organization = cards[0].organization
+            phoneNumber = cards[0].phoneNumber
+            email = cards[0].mail
+            school = cards[0].school
+            url = cards[0].URL
+            memo = cards[0].memo
+        }
         print("Data loaded.")
     }
     
