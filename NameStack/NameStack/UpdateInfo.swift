@@ -14,6 +14,7 @@ struct UpdateInfo: View {
     @Binding var isTabBarVisible: Bool
     @Binding var selectedTab: Int
     
+    
     var body: some View {
         ZStack {
             Color.black
