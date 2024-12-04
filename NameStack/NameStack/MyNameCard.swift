@@ -38,6 +38,8 @@ struct MyNameCard: View {
     @Binding var isTabBarVisible: Bool
     @Binding var selectedTab: Int
     
+    @State private var showSaveAlert = false
+    
     private let context = CIContext()
     private let qrFilter = CIFilter.qrCodeGenerator()
     private let colorFilter = CIFilter.falseColor()
@@ -160,6 +162,7 @@ struct MyNameCard: View {
                     
                     // Save Button
                     Button(action: {
+                        showSaveAlert=true
                         saveData()
                         // Action for save button
                     }) {
@@ -182,7 +185,9 @@ struct MyNameCard: View {
         }
         .onAppear(perform: loadData)
         
-        
+        .alert("저장되었습니다", isPresented: $showSaveAlert) { // Alert 표시
+            Button("확인", role: .cancel) {}
+        }
     }
     
     private func dismissKeyboard() {
