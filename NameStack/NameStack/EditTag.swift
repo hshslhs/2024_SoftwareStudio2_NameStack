@@ -72,30 +72,7 @@ struct EditTag: View {
                                         }
                                     }
                                 }
-                                /* 분류 태그 추가 경우:
-                                HStack(){
-                                    ZStack() {
-                                        Rectangle()
-                                            .foregroundColor(.clear)
-                                            .frame(width: 260, height: 25)
-                                            .background(Color(red: 0.07, green: 0.44, blue: 0.85).opacity(0.53))
-                                            .cornerRadius(6)
-                                        Text("한양대")
-                                            .font(Font.custom("Urbanist", size: 15).weight(.bold))
-                                            .foregroundColor(.white)
-                                    }
-                                    
-                                    Button(action: {
-                                        checkTag[0] = !checkTag[0]
-                                    }){
-                                        if(!checkTag[0]){
-                                            Image("uncheck")
-                                        }else{
-                                            Image("checkfill")
-                                        }
-                                    }
-                                }*/
-                                
+
                             }
                             
                         }.frame(width: 350, height: 600)
@@ -116,6 +93,8 @@ struct EditTag: View {
                         Spacer()
                     }
                 }
+            .navigationBarBackButtonHidden(true)
+
             }   //.onAppear(perform: loadData) //
                 //.navigationBarBackButtonHidden(true)
                 /*.onTapGesture {
