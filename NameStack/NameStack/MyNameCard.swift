@@ -16,9 +16,13 @@ struct Constants {
 
 struct MyNameCard: View {
     @Environment(\.modelContext) private var modelContext
-    @Query(filter: #Predicate<Card> {
-        $0.id == UUID(uuidString: "00000000-0000-0000-0000-000000000000")
-      }) private var cards: [Card]
+    private let cardID = UUID(uuidString: "00000000-0000-0000-0000-000000000000")! // 상수로 선언
+    
+    @Query private var allCards: [Card]
+    
+    var cards: [Card] {
+        allCards.filter { $0.id == cardID }
+    }
     
     @State private var name: String = ""
     @State private var organization: String = ""
