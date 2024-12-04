@@ -29,9 +29,6 @@ struct FriendNameCard_list: View {
     var body: some View {
         ZStack() {
             Color.black.edgesIgnoringSafeArea(.all)
-            
-            
-            
             Button(action: {
                 dismissKeyboard()
                 isSidebarVisible.toggle()
@@ -78,17 +75,13 @@ struct FriendNameCard_list: View {
                             .offset(x:10)
                         Spacer() .frame(width: 5)
                         
-                        
                         Button(action: {
                             searchText = "" // Clear search text
                         }) {
                             Image("eraseAll")
                                 .foregroundColor(.gray)
                         }
-                        
-                        
                         Spacer() .frame(width: 11)
-                        
                         Button(action: {
                             
                         }) {
@@ -99,8 +92,6 @@ struct FriendNameCard_list: View {
                                 )
                                 .frame(width: 25.16, height: 25.16)
                         }
-                        
-                        
                     }
                     .background(
                         Rectangle()
@@ -114,11 +105,10 @@ struct FriendNameCard_list: View {
                                     .stroke(.white, lineWidth: 2)
                             )
                     )
-                    
                     Spacer() .frame(width: 30)
-                    
                     Button(action: {
-                        withAnimation{ path.append(MainDestination.edit)}
+                        
+                        withAnimation{ path.append(MainDestination.edit(cardID))}
                     }){
                         Image("plus")
                             .alignmentGuide(.trailing) { d in d[.trailing] - 50 }
@@ -127,54 +117,52 @@ struct FriendNameCard_list: View {
                 
                 
                 ScrollView{
-                    VStack(){
-                        //card
-                        //임시로 가상 데이터 들어가있는 상태
-                        ZStack() {
-                            Rectangle()
-                                .foregroundColor(.clear)
-                                .frame(width: 330, height: 93)
-                                .cornerRadius(4)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 4)
-                                        .inset(by: 0.50)
-                                        .stroke(.white, lineWidth: 2)
-                                )
-                            Text("이현서")
-                                .font(Font.custom("Urbanist", size: 25).weight(.semibold))
-                                .foregroundColor(.white)
-                                .offset(x: -110.50, y: -14.50)
-                            
-                            Text("Software Studio 2024")
-                                .font(Font.custom("Urbanist", size: 16).weight(.light))
-                                .foregroundColor(.white)
-                                .offset(x: -69, y: 18)
-                            
-                            HStack(){
-                                Button(action: {
-                                    withAnimation{ path.append(MainDestination.edit)}
-                                    
-                                }) {
-                                    Image("Arrow2")
-                                        .foregroundColor(.white)
-                                        .padding(
-                                            EdgeInsets(top: 7.50, leading: 3.75, bottom: 7.50, trailing: 3.75)
-                                        )
-                                        .frame(width: 25.16, height: 25.16)
-                                }
-                            }.padding(.leading, 280)
-                        }.padding(.top, 20)
+                    ForEach(cards) { namecard in
+                        VStack(spacing: 15){
+                            ZStack() {
+                                Rectangle()
+                                    .foregroundColor(.clear)
+                                    .frame(width: 330, height: 93)
+                                    .cornerRadius(4)
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 4)
+                                            .inset(by: 0.50)
+                                            .stroke(.white, lineWidth: 2)
+                                    )
+                                Text(namecard.name)
+                                    .font(Font.custom("Urbanist", size: 25).weight(.semibold))
+                                    .foregroundColor(.white)
+                                    .offset(x: -110.50, y: -14.50)
+                                
+                                Text(namecard.organization)
+                                    .font(Font.custom("Urbanist", size: 16).weight(.light))
+                                    .foregroundColor(.white)
+                                    .offset(x: -69, y: 18)
+                                
+                                HStack(){
+                                    Button(action: {
+                                        withAnimation{path.append(MainDestination.edit(namecard.id))}
+                                    }) {
+                                        Image("Arrow2")
+                                            .foregroundColor(.white)
+                                            .padding(
+                                                EdgeInsets(top: 7.50, leading: 3.75, bottom: 7.50, trailing: 3.75)
+                                            )
+                                            .frame(width: 25.16, height: 25.16)
+                                    }
+                                }.padding(.leading, 280)
+                            }
+                            .padding(.top, 20)
                             .frame(width: 330, height: 93)
-
-                    }.padding(.vertical)
+                            
+                        }.padding(.vertical)
+                    }
+                    .offset(x:0, y:43)
                 }
-                .offset(x:0, y:43)
-            }
+            }.onTapGesture{dismissKeyboard()}
             
-            
-        }.onTapGesture{dismissKeyboard()}
-        
-        .navigationBarBackButtonHidden(true)
+                .navigationBarBackButtonHidden(true)
+        }
     }
     private func dismissKeyboard() {
          UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)

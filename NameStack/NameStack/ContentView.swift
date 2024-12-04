@@ -18,7 +18,7 @@ enum MainDestination: Hashable {
     case account
     case updateInfo
     
-    case edit
+    case edit(UUID)
     case editTag
 }
 
@@ -94,8 +94,8 @@ struct ContentView: View {
                         Account(isSidebarVisible: $isSidebarVisible, path:$path, isTabBarVisible: $isTabBarVisible, selectedTab: $selectedTab)
                     case .updateInfo:
                         UpdateInfo(isSidebarVisible: $isSidebarVisible, path:$path, isTabBarVisible: $isTabBarVisible, selectedTab:$selectedTab)
-                    case .edit:
-                        FriendNameCard_edit(path:$path, isTabBarVisible: $isTabBarVisible, selectedTab: $selectedTab)
+                    case .edit(let namecardID):
+                        FriendNameCard_edit(namecardID: namecardID, path:$path, isTabBarVisible: $isTabBarVisible, selectedTab: $selectedTab)
                     case .editTag:
                         EditTag(path:$path, isTabBarVisible: $isTabBarVisible, selectedTab: $selectedTab)
                     }

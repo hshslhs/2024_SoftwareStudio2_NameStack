@@ -7,6 +7,7 @@
 
 import SwiftUI
 import CoreImage.CIFilterBuiltins
+import SwiftData
 
 /*
 struct Constants {
@@ -14,6 +15,15 @@ struct Constants {
 }
 */
 struct FriendNameCard_edit: View {
+    var namecardID: UUID
+    
+    @Query private var allCards: [Card]
+    
+    var thisCard: [Card] {
+        allCards.filter { $0.id == namecardID }
+    }
+    //var thisCard: Card
+        
     @State private var name: String = ""
     @State private var organization: String = ""
     @State private var phoneNumber: String = ""
@@ -37,7 +47,13 @@ struct FriendNameCard_edit: View {
 
     
     var body: some View {
-        
+        //thisCard 에 특정 네임카드 넣어주기
+        /*ForEach(cards) {namecard in
+            if (namecard.UUID == namecardID){
+                thisCard = namecard
+            }
+        }*/
+        //thisCard = cards[0]
             ZStack {
                 Color.black.edgesIgnoringSafeArea(.all)
                 
@@ -80,7 +96,7 @@ struct FriendNameCard_edit: View {
                                 Spacer()
                                     .frame(width:10)
                                 VStack(alignment: .leading, spacing: 10) {
-                                    Text(name.isEmpty ? "Your Name" : name)
+                                    Text(name.isEmpty ? "Your Name" : thisCard[0].name)
                                         .font(.title)
                                         .fontWeight(.bold)
                                         .foregroundColor(.black)
@@ -88,30 +104,29 @@ struct FriendNameCard_edit: View {
                                     Spacer()
                                         .frame(height:40)
                                     
-                                    Text(school.isEmpty ? "Your School" : school)
+                                    Text(school.isEmpty ? "Your School" : thisCard[0].school)
                                         .font(.subheadline)
                                         .foregroundColor(.black)
                                     
-                                    Text(phoneNumber.isEmpty ? "Your Phone Number" : phoneNumber)
+                                    Text(phoneNumber.isEmpty ? "Your Phone Number" : thisCard[0].phoneNumber)
                                         .font(.subheadline)
                                         .foregroundColor(.black)
                                     
                                     
-                                    Text(email.isEmpty ? "Your Email" : email)
+                                    Text(email.isEmpty ? "Your Email" : thisCard[0].mail)
                                         .font(.subheadline)
                                         .foregroundColor(.black)
                                     
                                     Spacer()
                                         .frame(height:100)
-                                    
-                                    
+
                                 }
                                 .padding()
                                 Spacer()
                             }
                             //      .padding(.trailing, 40)
                             
-                            Text(organization.isEmpty ? "Your Organization" : organization)
+                            Text(organization.isEmpty ? "Your Organization" : thisCard[0].organization)
                                 .font(.footnote)
                                 .foregroundColor(.black)
                                 .padding(.top,300)
