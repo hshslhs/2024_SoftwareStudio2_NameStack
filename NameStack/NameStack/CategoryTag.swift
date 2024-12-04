@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct CategoryTag: View {
     @Binding var isSidebarVisible: Bool
@@ -13,13 +14,16 @@ struct CategoryTag: View {
     @Binding var isTabBarVisible: Bool
     @Binding var selectedTab: Int
     
-    @State private var tags: [Tag] = []
+    @Environment(\.modelContext) private var modelContext
+
+    @Query private var tags: [NameTag]
+
     @State private var selectedTagIndex: UUID? = nil
     @State private var showEditName = false
     @State private var editedName: String = ""
     @State private var editingIndex: UUID? = nil
 
-    let paletteColors: [Color] = [.red, .orange, .yellow, .green, .blue, .indigo, .purple, .brown]
+    let paletteColors: [Color] = [.red, .orange, .yellow, .green, .blue, .indigo, .purple, .brown, .gray]
 
     var body: some View {
         ZStack {
@@ -83,7 +87,7 @@ struct CategoryTag: View {
 
                                 }) {
                                     Circle()
-                                        .fill(tag.color)
+                                        .fill(paletteColors[tag.colorIndex])
                                         .frame(width: 30, height: 30)
                                 } .buttonStyle(PlainButtonStyle())
                                 .contentShape(Circle())
@@ -109,7 +113,7 @@ struct CategoryTag: View {
                             .padding()
                             .background(
                                 RoundedRectangle(cornerRadius: 10)
-                                    .fill(tag.color.opacity(0.2))
+                                    .fill(paletteColors[tag.colorIndex].opacity(0.2))
                             ).frame(width:350, height:50)
 
                             
@@ -123,7 +127,7 @@ struct CategoryTag: View {
                                             .frame(width: 30, height: 30)
                                             .onTapGesture {
                                                 if let index = tags.firstIndex(where: { $0.id == tag.id }) {
-                                                    tags[index].color = color
+                                                    tags[index].colorIndex = colorToIndex(color: color)
                                                 }
                                                 withAnimation {
                                                     selectedTagIndex = nil
@@ -150,13 +154,36 @@ struct CategoryTag: View {
             Button("Cancel", role: .cancel) { showEditName = false }
         }
     }
+    
+    private func colorToIndex(color: Color) -> Int {
+        switch color{
+        case .red:
+            return 0
+        case .orange:
+            return 1
+        case .yellow:
+            return 2
+        case .green:
+            return 3
+        case .blue:
+            return 4
+        case .indigo:
+            return 5
+        case .purple:
+            return 6
+        case .brown:
+            return 7
+        default:
+            return 8
+        }
+    }
 
     private func addNewTag() {
-        tags.append(Tag(name: "New Tag", color: .gray))
+        modelContext.insert(NameTag(name: "New Tag", color: 8))
     }
 
     private func deleteTag(at offsets: IndexSet) {
-        tags.remove(atOffsets: offsets)
+        modelContext.delete(tags[offsets.first!])
     }
 
     private func saveEditedName() {
