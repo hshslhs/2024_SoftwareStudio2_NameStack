@@ -137,9 +137,33 @@ struct FriendNameCard_edit: View {
                             Button(action:{
                                 withAnimation{ path.append(MainDestination.editTag)}
                             }){
-                                Rectangle()
-                                    .foregroundColor(.blue)
-                                    .frame(width: 20, height: 20)
+                                ZStack{
+                                    Rectangle()
+                                        .foregroundColor(.clear)
+                                        .frame(width: 89, height: 25)
+                                        .cornerRadius(4)
+                                        .overlay(
+                                            RoundedRectangle(cornerRadius: 4)
+                                                .inset(by: 0.5)
+                                                .stroke(.white, lineWidth: 1)
+                                        )
+                                    
+                                    
+                                    
+                                    HStack{
+                                        
+                                        Image("Tag")
+                                            .frame(width: 14, height: 14)
+                                        
+                                        Text("태그 편집")
+                                            .font(Font.custom("Roboto", size: 11))
+                                            .kerning(0.25)
+                                            .foregroundColor(.white)
+                                        
+                                        
+                                    }
+                                    
+                                }.padding(.bottom, 10)
                             }
                             CustomTextField(title: "이름", text: $name)
                             CustomTextField(title: "소속", text: $organization)
