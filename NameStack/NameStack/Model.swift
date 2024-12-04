@@ -42,11 +42,11 @@ class NameTag {
     @Attribute(.unique)
     var id: UUID
     var name: String
-    var color: String
+    var colorIndex: Int
 
-    init(id: UUID = UUID(), content: String, color : String) {
+    init(id: UUID = UUID(), name: String, color : Int) {
         self.id = id
-        self.name = content
-        self.color = color
+        self.name = name
+        self.colorIndex = color
     }
 }
