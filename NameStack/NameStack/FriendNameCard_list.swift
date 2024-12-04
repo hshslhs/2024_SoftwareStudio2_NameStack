@@ -7,12 +7,22 @@
 
 import SwiftUI
 import UIKit
+import SwiftData
 
 struct FriendNameCard_list: View {
     @Binding var isSidebarVisible: Bool
     @Binding var path: NavigationPath
     @Binding var isTabBarVisible: Bool
     @Binding var selectedTab: Int
+    
+    @Environment(\.modelContext) private var modelContext
+    private let cardID = UUID(uuidString: "00000000-0000-0000-0000-000000000000")!
+    
+    @Query private var allCards: [Card]
+    
+    var cards: [Card] {
+        allCards.filter { $0.id != cardID }
+    }
     
     @State private var searchText: String = "Search.."
 
