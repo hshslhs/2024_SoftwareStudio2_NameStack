@@ -24,6 +24,9 @@ struct EditTag: View {
     private let context = CIContext()
     private let qrFilter = CIFilter.qrCodeGenerator()
     private let colorFilter = CIFilter.falseColor()
+    
+    let paletteColors: [Color] = [.red, .orange, .yellow, .green, .blue, .indigo, .purple, .brown, .gray]
+
     @State private var checkTag = [false]
 
         
@@ -54,7 +57,8 @@ struct EditTag: View {
                         .frame(height:70)
                     
                     ScrollView{
-                        VStack(spacing: 20){
+                        ForEach(tags) { tag in
+                            VStack(spacing: 20){
                                 HStack(){
                                     ZStack() {
                                         Rectangle()
@@ -62,12 +66,13 @@ struct EditTag: View {
                                             .frame(width: 260, height: 25)
                                             .background(Color(red: 0.07, green: 0.44, blue: 0.85).opacity(0.53))
                                             .cornerRadius(6)
-                                        Text("한양대")
+                                        Text(tag.name)
                                             .font(Font.custom("Urbanist", size: 15).weight(.bold))
                                             .foregroundColor(.white)
                                     }
                                     
                                     Button(action: {
+                                        //명함의 태그 별 ox 여부 체크
                                         checkTag[0] = !checkTag[0]
                                     }){
                                         if(!checkTag[0]){
@@ -76,11 +81,13 @@ struct EditTag: View {
                                             Image("checkfill")
                                         }
                                     }
-                                }
-
+                                }.background(RoundedRectangle(cornerRadius: 10)
+                                    .fill(paletteColors[tag.colorIndex].opacity(0.2)))
+                                
                             }
                             
                         }.frame(width: 350, height: 600)
+                    }
                         
                         
                         // Save Button
