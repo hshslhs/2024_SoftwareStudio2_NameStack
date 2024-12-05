@@ -13,7 +13,7 @@ import SwiftData
 struct NameStackApp: App {
     var nameStackModelContainer: ModelContainer = {
         let schema = Schema([Card.self])
-        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: true) //개발 과정에서는 isStoredInMemoryOnly를 true로
+        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false) //개발 과정에서는 isStoredInMemoryOnly를 true로
         do {
           return try ModelContainer(for: schema, configurations: [modelConfiguration])
         } catch {

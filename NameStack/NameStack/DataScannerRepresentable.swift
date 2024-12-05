@@ -19,12 +19,32 @@ import VisionKit
 struct DataScannerRepresentable: UIViewControllerRepresentable {
     @Binding var shouldStartScanning: Bool
     @Binding var scannedText: String
+    @Binding var path: NavigationPath
 
     var dataToScanFor: Set<DataScannerViewController.RecognizedDataType>
     
-    func parseQrText()-> Card{
-        let scannedCard = Card(name: "",phoneNumber: "",mail: "",organization: "",school: "",URL: "",memo: "")
-        return scannedCard;
+    func parseQrText(){
+        //텍스트 파싱하기
+        let lines = scannedText.split(separator: "\n", maxSplits: 7)
+        var result : [String] = []
+        if(lines.count != 7){
+            return
+        }
+        for line in lines {
+            // 각 줄에서 ': '로 구분하여 키와 값을 나눔
+            let parts = line.split(separator: ":", maxSplits: 1)
+            if parts.count == 2 {
+                //let key = parts[0].trimmingCharacters(in: .whitespaces)
+                let value = parts[1].trimmingCharacters(in: .whitespaces)
+                result.append(value)
+            }
+            else{
+                let value = ""
+                result.append(value)
+            }
+        }
+        let scannedCard = Card(name: result[0],phoneNumber: result[1],mail: result[2],organization: result[3],school: result[4],URL: result[5],memo: result[6])
+        withAnimation{ path.append(MainDestination.editScanned(scannedCard))}
     }
     
     class Coordinator: NSObject, DataScannerViewControllerDelegate {
@@ -45,6 +65,7 @@ struct DataScannerRepresentable: UIViewControllerRepresentable {
             default:
                 print("unexpected item")
             }
+            parent.parseQrText()
         }
     }
     

@@ -108,7 +108,7 @@ struct FriendNameCard_list: View {
                     Spacer() .frame(width: 30)
                     Button(action: {
                         
-                        withAnimation{ path.append(MainDestination.edit(cardID))}
+                        withAnimation{ path.append(MainDestination.edit(UUID()))}
                     }){
                         Image("plus")
                             .alignmentGuide(.trailing) { d in d[.trailing] - 50 }

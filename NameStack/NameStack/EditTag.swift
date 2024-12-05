@@ -8,13 +8,18 @@
 
 import SwiftUI
 import CoreImage.CIFilterBuiltins
+import SwiftData
 
 struct EditTag: View {
 
-    
+    var thisCard: Card
     @Binding var path: NavigationPath
     @Binding var isTabBarVisible: Bool
     @Binding var selectedTab: Int
+    
+    @Environment(\.modelContext) private var modelContext
+
+    @Query private var tags: [NameTag]
     
     private let context = CIContext()
     private let qrFilter = CIFilter.qrCodeGenerator()

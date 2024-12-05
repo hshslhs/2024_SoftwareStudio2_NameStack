@@ -11,7 +11,13 @@ import SwiftData
 
 struct LoopingScrollView: View {
     @Environment(\.modelContext) private var modelContext
-    @Query private var cards: [Card]
+    private let cardID = UUID(uuidString: "00000000-0000-0000-0000-000000000000")!
+    
+    @Query private var allCards: [Card]
+    
+    var cards: [Card] {
+        allCards.filter { $0.id != cardID }
+    }
     var body: some View {
             ScrollView( showsIndicators: false) {
                 RoundedRectangle(cornerRadius: 15)

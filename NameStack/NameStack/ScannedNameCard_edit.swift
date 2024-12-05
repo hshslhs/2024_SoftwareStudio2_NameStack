@@ -14,14 +14,10 @@ struct Constants {
   static let GraysBlack: Color = .black
 }
 */
-struct FriendNameCard_edit: View {
-    var namecardID: UUID
+struct ScannedNameCard_edit: View {
     @Environment(\.modelContext) private var modelContext
-    @Query private var allCards: [Card]
     
-    var thisCard: [Card] {
-        allCards.filter { $0.id == namecardID }
-    }
+    var thisCard: Card
     //var thisCard: Card
         
     @State private var name: String = ""
@@ -135,7 +131,7 @@ struct FriendNameCard_edit: View {
                         
                         VStack(spacing: 15) {
                             Button(action:{
-                                withAnimation{ path.append(MainDestination.editTag(thisCard[0]))}
+                                withAnimation{ path.append(MainDestination.editTag(thisCard))}
                             }){
                                 ZStack{
                                     Rectangle()
@@ -257,38 +253,31 @@ struct FriendNameCard_edit: View {
     }
     // 데이터 저장 함수
     private func saveData() {
-        if(!thisCard.isEmpty){
-            thisCard[0].name = name
-            thisCard[0].organization = organization
-            thisCard[0].phoneNumber = phoneNumber
-            thisCard[0].mail = email
-            thisCard[0].school = school
-            thisCard[0].URL = url
-            thisCard[0].memo = memo
+        thisCard.name = name
+        thisCard.organization = organization
+        thisCard.phoneNumber = phoneNumber
+        thisCard.mail = email
+        thisCard.school = school
+        thisCard.URL = url
+        thisCard.memo = memo
+        do {
+            modelContext.insert(thisCard)
+        try modelContext.save()
+        } catch {
+          //print("error")
         }
-        else{
-            let newCard: Card = Card(id: namecardID, name: name, phoneNumber: phoneNumber, mail: email, organization: organization, school: school, URL: url, memo: memo)
-            do {
-                modelContext.insert(newCard)
-            try modelContext.save()
-            } catch {
-              print("error")
-            }
-        }
-        print("Data saved.")
+        //print("Data saved.")
     }
 
     // 데이터 로드 함수
     private func loadData() {
-        if(!thisCard.isEmpty){
-            name = thisCard[0].name
-            organization = thisCard[0].organization
-            phoneNumber = thisCard[0].phoneNumber
-            email = thisCard[0].mail
-            school = thisCard[0].school
-            url = thisCard[0].URL
-            memo = thisCard[0].memo
-        }
+        name = thisCard.name
+        organization = thisCard.organization
+        phoneNumber = thisCard.phoneNumber
+        email = thisCard.mail
+        school = thisCard.school
+        url = thisCard.URL
+        memo = thisCard.memo
         //print("Data loaded.")
     }
     
