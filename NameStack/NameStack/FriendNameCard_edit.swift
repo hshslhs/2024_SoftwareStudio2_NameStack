@@ -24,6 +24,8 @@ struct FriendNameCard_edit: View {
     }
     //var thisCard: Card
         
+    let paletteColors: [Color] = [.red, .orange, .yellow, .green, .blue, .indigo, .purple, .brown, .gray]
+
     @State private var name: String = ""
     @State private var organization: String = ""
     @State private var phoneNumber: String = ""
@@ -38,6 +40,8 @@ struct FriendNameCard_edit: View {
     @Binding var path: NavigationPath
     @Binding var isTabBarVisible: Bool
     @Binding var selectedTab: Int
+    
+    @State private var showSaveAlert = false
     
     private let context = CIContext()
     private let qrFilter = CIFilter.qrCodeGenerator()
@@ -101,8 +105,19 @@ struct FriendNameCard_edit: View {
                                         .fontWeight(.bold)
                                         .foregroundColor(.black)
                                     
+                                    if !thisCard.isEmpty {
+                                        HStack {
+                                            ForEach(thisCard[0].tags) { tag in
+                                                Circle()
+                                                    .fill(paletteColors[tag.colorIndex]).opacity(0.8) // 태그 색상
+                                                    .frame(width: 20, height: 20)
+                                            }
+                                        }
+                                        .padding(.top, 2)
+                                    }
+
                                     Spacer()
-                                        .frame(height:40)
+                                        .frame(height:10)
                                     
                                     Text(school.isEmpty ? "Your School" : school)
                                         .font(.subheadline)
@@ -178,6 +193,7 @@ struct FriendNameCard_edit: View {
                         
                         // Save Button
                         Button(action: {
+                            showSaveAlert=true
                             saveData()
                             // Action for save button
                         }) {
@@ -196,6 +212,9 @@ struct FriendNameCard_edit: View {
                 .navigationBarBackButtonHidden(true)
                 .onTapGesture {
                     dismissKeyboard()// 키보드 밖 공간 눌렀을 때 키보드 닫기
+                }
+                .alert("저장되었습니다", isPresented: $showSaveAlert) { // Alert 표시
+                    Button("확인", role: .cancel) {}
                 }
             
             /*
