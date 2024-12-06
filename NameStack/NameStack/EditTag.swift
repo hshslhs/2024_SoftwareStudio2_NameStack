@@ -19,7 +19,7 @@ struct EditTag: View {
     
     @Environment(\.modelContext) private var modelContext
 
-    @Query private var tags: [NameTag]
+    @Query(sort: \NameTag.name, order: .forward) private var tags: [NameTag]
     
     private let context = CIContext()
     private let qrFilter = CIFilter.qrCodeGenerator()
@@ -27,7 +27,7 @@ struct EditTag: View {
     
     let paletteColors: [Color] = [.red, .orange, .yellow, .green, .blue, .indigo, .purple, .brown, .gray]
 
-    @State private var checkTag = [false]
+    @State private var checkTag: [UUID:Bool] = [:]
 
         
     var body: some View {
@@ -62,9 +62,8 @@ struct EditTag: View {
                                 HStack(){
                                     ZStack() {
                                         Rectangle()
-                                            .foregroundColor(.clear)
+                                            .foregroundColor(paletteColors[tag.colorIndex].opacity(0.2))
                                             .frame(width: 260, height: 25)
-                                            .background(Color(red: 0.07, green: 0.44, blue: 0.85).opacity(0.53))
                                             .cornerRadius(6)
                                         Text(tag.name)
                                             .font(Font.custom("Urbanist", size: 15).weight(.bold))
@@ -73,17 +72,15 @@ struct EditTag: View {
                                     
                                     Button(action: {
                                         //명함의 태그 별 ox 여부 체크
-                                        checkTag[0] = !checkTag[0]
+                                        checkTag[tag.id]! = !checkTag[tag.id]!
                                     }){
-                                        if(!checkTag[0]){
+                                        if(!(checkTag[tag.id] ?? false)){
                                             Image("uncheck")
                                         }else{
                                             Image("checkfill")
                                         }
                                     }
-                                }.background(RoundedRectangle(cornerRadius: 10)
-                                    .fill(paletteColors[tag.colorIndex].opacity(0.2)))
-                                
+                                }
                             }
                             
                         }.frame(width: 350, height: 600)
@@ -92,7 +89,7 @@ struct EditTag: View {
                         
                         // Save Button
                         Button(action: {
-                            // Action for save button
+                            saveData()
                         }) {
                             Text("저장")
                                 .font(.headline)
@@ -101,13 +98,42 @@ struct EditTag: View {
                                 .background(Color.blue)
                                 .cornerRadius(10)
                                 .padding(.horizontal)
+                            
                         }
                         Spacer()
                     }
                 }
             .navigationBarBackButtonHidden(true)
+            .onAppear(perform: loadData)
 
-            }   //.onAppear(perform: loadData) //
+            }
+    private func loadData() {
+        for tag in tags{
+            print(checkTag)
+            if(thisCard.tags.contains(tag)){
+                checkTag.updateValue(true, forKey: tag.id)
+            }
+            else{
+                checkTag.updateValue(false, forKey: tag.id)
+            }
+        }
+    }
+    private func saveData(){
+        for tag in tags{
+            print(checkTag)
+            if(checkTag[tag.id]! && !thisCard.tags.contains(tag)){
+                thisCard.tags.append(tag)
+            }
+            else if(!checkTag[tag.id]! && thisCard.tags.contains(tag)){
+                if let index = thisCard.tags.firstIndex(of: tag) {
+                    thisCard.tags.remove(at: index)
+                }
+            }
+        }
+    }
+    
+    
+    // //
                 //.navigationBarBackButtonHidden(true)
                 /*.onTapGesture {
                     dismissKeyboard()// 키보드 밖 공간 눌렀을 때 키보드 닫기

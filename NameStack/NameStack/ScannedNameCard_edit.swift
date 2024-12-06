@@ -34,22 +34,11 @@ struct ScannedNameCard_edit: View {
     @Binding var path: NavigationPath
     @Binding var isTabBarVisible: Bool
     @Binding var selectedTab: Int
-    
-    private let context = CIContext()
-    private let qrFilter = CIFilter.qrCodeGenerator()
-    private let colorFilter = CIFilter.falseColor()
-    
+
     //@Environment(\.dismiss) var dismiss // 모달을 닫기 위한 환경 변수
 
     
     var body: some View {
-        //thisCard 에 특정 네임카드 넣어주기
-        /*ForEach(cards) {namecard in
-            if (namecard.UUID == namecardID){
-                thisCard = namecard
-            }
-        }*/
-        //thisCard = cards[0]
             ZStack {
                 Color.black.edgesIgnoringSafeArea(.all)
                 
@@ -193,11 +182,7 @@ struct ScannedNameCard_edit: View {
                 .onTapGesture {
                     dismissKeyboard()// 키보드 밖 공간 눌렀을 때 키보드 닫기
                 }
-            
-            /*
-                .navigationDestination(for: UIImage.self) { qrImage in
-                    QRCode(qrImage: qrImage, path:$path) // QRCodeView로 QR 코드 이미지 전달
-                }*/
+
         
         
     }
@@ -205,52 +190,6 @@ struct ScannedNameCard_edit: View {
          UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
      }
     
-    // QR 코드에 포함될 데이터 문자열
-    private func qrDataString() -> String {
-        
-        """
-        Name: \(name)
-        Organization: \(organization)
-        Phone Number: \(phoneNumber)
-        Email: \(email)
-        School: \(school)
-        URL: \(url)
-        Memo: \(memo)
-        """
-    }
-
-    // QR 코드 생성 함수
-   /* private func generateQRCode(from string: String) -> UIImage? {
-        filter.message = Data(string.utf8)
-        
-        if let outputImage = filter.outputImage {
-            // 10배 확대하여 선명한 QR 코드 생성
-            let scaledImage = outputImage.transformed(by: CGAffineTransform(scaleX: 10, y: 10))
-            
-            if let cgimg = context.createCGImage(scaledImage, from: scaledImage.extent) {
-                return UIImage(cgImage: cgimg)
-            }
-        }
-        return nil
-    }
-*/
-    private func generateQRCode(from string: String) -> UIImage? {
-        qrFilter.message = Data(string.utf8)
-        
-        if let qrOutputImage = qrFilter.outputImage {
-            // 색상 필터 설정: 포어그라운드를 흰색으로, 배경을 검정색으로 설정
-            colorFilter.inputImage = qrOutputImage
-            colorFilter.color0 = CIColor.white // QR 코드 색상
-            colorFilter.color1 = CIColor.black // 배경색
-            
-            // 이미지 렌더링 및 반환
-            if let coloredQRImage = colorFilter.outputImage,
-               let cgImage = context.createCGImage(coloredQRImage.transformed(by: CGAffineTransform(scaleX: 1, y: 1)), from: coloredQRImage.extent) {
-                return UIImage(cgImage: cgImage)
-            }
-        }
-        return nil
-    }
     // 데이터 저장 함수
     private func saveData() {
         thisCard.name = name
@@ -282,163 +221,6 @@ struct ScannedNameCard_edit: View {
     }
     
 }
-
-/*
-struct CustomTextField: View {
-    var title: String
-    @Binding var text: String
-    var keyboardType: UIKeyboardType = .default
-    var isMultiline: Bool = false
-
-    var body: some View {
-        if isMultiline {
-            
-            ZStack{
-                RoundedRectangle(cornerRadius: 10)
-                    .fill(Color.black) // 검정색 배경
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 10)
-                            .stroke(Color.white, lineWidth: 1) // 흰색 테두리
-                    )
-                
-                VStack{
-                    HStack{
-                        Text(title)
-                            .font(.caption)
-                            .foregroundColor(.gray) // 위에 작은 타이틀
-                            .padding(.leading,15)
-                        Spacer()
-                    }.padding(.top,10)
-                    TextEditor(text: $text)
-                        .frame(height: 100)
-                        .padding(.horizontal, 10)
-                        .scrollContentBackground(.hidden)
-                        .background(Color.clear)
-                        .foregroundColor(.white)
-                        .autocapitalization(.none)
-                }
-            }
-        } else {
-            ZStack{
-                RoundedRectangle(cornerRadius: 10).stroke(Color.white, lineWidth: 1)
-                VStack{
-                    HStack{
-                        Text(title)
-                            .font(.caption)
-                            .foregroundColor(.gray)
-                            .padding(.leading,15)
-                        Spacer()
-                    }.padding(.top,10)
-                    TextField(title, text: $text)
-                        .keyboardType(keyboardType)
-                        .padding(.leading,15)
-                        .padding(.trailing, 15)
-                        .padding(.bottom,10)
-                    
-                        .background(Color.black.opacity(0.1))
-                        .foregroundColor(.white)
-                        .autocapitalization(.none)
-                    
-                }
-                    
-            }
-        }
-    }
-}
- */
-/*
-// QR 코드 표시 뷰
-struct QRCodeView: View {
-var qrImage: UIImage?
-    @Binding var path: NavigationPath
-    
-var body: some View {
-    ZStack{
-        Color.black.ignoresSafeArea(.all)
-        VStack() {
-            HStack {
-                Button(action: {
-                    path.removeLast() // NavigationStack에서 뒤로 가기
-                }) {
-                    Image("Arrow")
-                        .resizable()
-                        .frame(width: 20, height: 20)
-                        .foregroundColor(.white)
-                }
-                Spacer()
-                
-                Image("NameStack")
-                    .resizable()
-                    .frame(width: 180, height: 30)
-                    .padding()
-                   
-                
-                Spacer()
-                
-            }
-        
-            Spacer()
-                .frame(height:60)
-            
-            Text("내 명함 공유하기")
-              .font(
-                Font.custom("Urbanist", size: 23)
-                  .weight(.medium)
-              )
-              .multilineTextAlignment(.center)
-              .foregroundColor(.white)
-              .frame(width: 218, height: 24, alignment: .center)
-              .padding()
-            
-            if let qrImage = qrImage {
-                Image(uiImage: qrImage)
-                    .resizable()
-                    .interpolation(.none)
-                    .scaledToFit()
-                    .frame(width: 200, height: 200)
-            } else {
-                Text("QR 코드 생성 실패")
-                    .foregroundColor(.red)
-            }
-            
-            Spacer()
-                .frame(height:30)
-            
-            Button(action: {
-                // 새로고침 기능이나 원하는 동작 추가
-                print("QR Code 새로고침 버튼 눌림")
-            }) {
-                HStack {
-                    
-                    Text("QR Code 새로고침")
-                        .font(
-                            Font.custom("Montserrat", size: 14)
-                                .weight(.medium)
-                        )
-                        .multilineTextAlignment(.center)
-                        .foregroundColor(.white)
-                        .frame(width: 218, height: 24, alignment: .center)
-                }
-                .frame(width: 179, height: 33, alignment: .center)
-                .background(Constants.GraysBlack)
-                .cornerRadius(30)
-                .shadow(color: Color(red: 0.18, green: 0.18, blue: 0.18).opacity(0.15), radius: 7.5, x: 0, y: 4)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 30)
-                        .inset(by: 0.5)
-                        .stroke(.white, lineWidth: 1)
-                )
-            }
-            Spacer()
-            
-        }
-        .padding()
-        .navigationBarBackButtonHidden(true)
-    }
-}
-}
-*/
-
 
 #Preview {
     ContentView()

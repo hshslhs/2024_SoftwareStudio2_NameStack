@@ -16,7 +16,7 @@ struct CategoryTag: View {
     
     @Environment(\.modelContext) private var modelContext
 
-    @Query private var tags: [NameTag]
+    @Query(sort: \NameTag.name, order: .forward) private var tags: [NameTag]
 
     @State private var selectedTagIndex: UUID? = nil
     @State private var showEditName = false

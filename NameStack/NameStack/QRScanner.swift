@@ -67,6 +67,7 @@ struct QRScanner: View {
                     DataScannerRepresentable(
                         shouldStartScanning: $isShowingScanner,
                         scannedText: $scannedText,
+                        path: $path,
                         dataToScanFor: [.barcode(symbologies: [.qr])]
                     ).frame(height: 500).shadow(radius: 1).background(.white)
                 }
