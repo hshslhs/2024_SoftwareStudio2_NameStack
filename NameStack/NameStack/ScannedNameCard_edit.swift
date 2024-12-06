@@ -34,7 +34,8 @@ struct ScannedNameCard_edit: View {
     @Binding var path: NavigationPath
     @Binding var isTabBarVisible: Bool
     @Binding var selectedTab: Int
-
+    
+    @State private var showSaveAlert = false
     //@Environment(\.dismiss) var dismiss // 모달을 닫기 위한 환경 변수
 
     
@@ -163,6 +164,7 @@ struct ScannedNameCard_edit: View {
                         
                         // Save Button
                         Button(action: {
+                            showSaveAlert=true
                             saveData()
                             // Action for save button
                         }) {
@@ -182,7 +184,9 @@ struct ScannedNameCard_edit: View {
                 .onTapGesture {
                     dismissKeyboard()// 키보드 밖 공간 눌렀을 때 키보드 닫기
                 }
-
+                .alert("저장되었습니다", isPresented: $showSaveAlert) { // Alert 표시
+                    Button("확인", role: .cancel) {}
+                }
         
         
     }
