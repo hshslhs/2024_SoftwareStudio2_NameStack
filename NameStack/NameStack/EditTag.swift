@@ -17,6 +17,8 @@ struct EditTag: View {
     @Binding var isTabBarVisible: Bool
     @Binding var selectedTab: Int
     
+    @State private var showSaveAlert = false
+    
     @Environment(\.modelContext) private var modelContext
 
     @Query(sort: \NameTag.name, order: .forward) private var tags: [NameTag]
@@ -89,6 +91,7 @@ struct EditTag: View {
                         
                         // Save Button
                         Button(action: {
+                            showSaveAlert=true
                             saveData()
                         }) {
                             Text("저장")
@@ -105,6 +108,9 @@ struct EditTag: View {
                 }
             .navigationBarBackButtonHidden(true)
             .onAppear(perform: loadData)
+            .alert("저장되었습니다", isPresented: $showSaveAlert) { // Alert 표시
+                Button("확인", role: .cancel) {}
+            }
 
             }
     private func loadData() {
