@@ -10,6 +10,11 @@ import UIKit
 import SwiftData
 
 struct LoopingScrollView: View {
+    //인자 값
+    var searchText: String
+    var searchTag: Dictionary<UUID,Bool>
+    
+    
     @Environment(\.modelContext) private var modelContext
     private let cardID = UUID(uuidString: "00000000-0000-0000-0000-000000000000")!
     
