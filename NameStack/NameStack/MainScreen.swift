@@ -16,7 +16,7 @@ struct MainScreen: View {
 
     
     @State private var showHomeButton = false
-    @State private var mainSearchText: String = "Search.."
+    @State private var mainSearchText: String = ""
     @State private var showLooping = true
     @State private var isEditing = false
     @State private var checkArray: [UUID:Bool] = [:]

@@ -19,9 +19,10 @@ struct LoopingScrollView: View {
     private let cardID = UUID(uuidString: "00000000-0000-0000-0000-000000000000")!
     
     @Query private var allCards: [Card]
+    @Query(sort: \NameTag.name, order: .forward) private var tags: [NameTag]
     
     var cards: [Card] {
-        allCards.filter { $0.id != cardID }
+        allCards.filter { $0.id != cardID && isSearchedCard(card: $0) }
     }
     var body: some View {
             ScrollView( showsIndicators: false) {
@@ -77,6 +78,51 @@ struct LoopingScrollView: View {
             
             return ret
         }
+    
+    func isSearchedCard(card: Card) -> Bool {
+        var retText = false
+        var retTag = false
+        var isSearchTag = false
+        if(card.name.lowercased().contains(searchText.lowercased())){
+            retText = true
+        }
+        else if(card.phoneNumber.lowercased().contains(searchText.lowercased())){
+            retText = true
+        }
+        else if(card.mail.lowercased().contains(searchText.lowercased())){
+            retText = true
+        }
+        else if(card.organization.lowercased().contains(searchText.lowercased())){
+            retText = true
+        }
+        else if(card.school.lowercased().contains(searchText.lowercased())){
+            retText = true
+        }
+        else if(card.URL.lowercased().contains(searchText.lowercased())){
+            retText = true
+        }
+        else if(card.memo.lowercased().contains(searchText.lowercased())){
+            retText = true
+        }
+        for tag in tags {
+            if(searchTag[tag.id] ?? false){
+                isSearchTag = true
+                if(card.tags.contains(tag)){
+                    retTag = true
+                }
+            }
+        }
+        if(isSearchTag && !searchText.isEmpty){
+            return retText && retTag
+        }
+        else if(isSearchTag && searchText.isEmpty){
+            return retTag
+        }
+        else if(!isSearchTag && !searchText.isEmpty){
+            return retText
+        }
+        return true
+    }
 }
 
 
