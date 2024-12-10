@@ -31,7 +31,7 @@ struct MainScreen: View {
         ZStack() {
             Color.black.ignoresSafeArea(.all)
             if(showLooping){
-                LoopingScrollView(searchText: mainSearchText, searchTag: checkArray)
+                LoopingScrollView(searchText: mainSearchText, searchTag: checkArray, path: $path)
                     .padding(.bottom, 30)
             }
             ZStack(){
@@ -125,7 +125,7 @@ struct MainScreen: View {
                         showLooping = true
                         isTabBarVisible=true
                         dismissKeyboard()
-                        LoopingScrollView(searchText: mainSearchText, searchTag: checkArray)
+                        LoopingScrollView(searchText: mainSearchText, searchTag: checkArray, path: $path)
                             .padding(.bottom, 30)
                     }) {
                         Image("search")

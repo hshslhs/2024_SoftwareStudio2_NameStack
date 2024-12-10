@@ -61,8 +61,6 @@ struct FriendNameCard_edit: View {
             ZStack {
                 Color.black.edgesIgnoringSafeArea(.all)
                 
-                
-                
                 Button(action: {
                     path.removeLast()
                 }) {

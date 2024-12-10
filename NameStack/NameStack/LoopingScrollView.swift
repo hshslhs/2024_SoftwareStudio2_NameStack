@@ -14,6 +14,9 @@ struct LoopingScrollView: View {
     var searchText: String
     var searchTag: Dictionary<UUID,Bool>
     
+    @Binding var path: NavigationPath
+
+    
     
     @Environment(\.modelContext) private var modelContext
     private let cardID = UUID(uuidString: "00000000-0000-0000-0000-000000000000")!
@@ -36,14 +39,54 @@ struct LoopingScrollView: View {
                                 .fill(.white)
                                 .stroke(Color.black, lineWidth: 2)
                                 .shadow(radius: 10)
-                                .overlay(Text("\(card.name)").bold().font(.system(size:100)))
+                                .overlay(
+                                    ZStack{
+                                        HStack{
+                                            Spacer()
+                                                .frame(width:10)
+                                            VStack(alignment: .leading, spacing: 10) {
+                                                Text(card.name)
+                                                    .font(.title)
+                                                    .fontWeight(.bold)
+                                                    .foregroundColor(.black)
+                                                
+                                                Spacer()
+                                                    .frame(height:40)
+                                                
+                                                Text(card.school)
+                                                    .font(.subheadline)
+                                                    .foregroundColor(.black)
+                                                
+                                                Text(card.phoneNumber)
+                                                    .font(.subheadline)
+                                                    .foregroundColor(.black)
+                                                
+                                                
+                                                Text(card.mail)
+                                                    .font(.subheadline)
+                                                    .foregroundColor(.black)
+                                                
+                                                Spacer()
+                                                    .frame(height:100)
+                                                
+                                                
+                                            }
+                                            .padding()
+                                            Spacer()
+                                        }
+                                        
+                                        
+                                        Text(card.organization)
+                                            .font(.footnote)
+                                            .foregroundColor(.black)
+                                        .padding(.top,300)})
                                 //.offset( y: -200*(1-getPercentage(geo: geometry)))
                                 .frame(width : 240, height : 377)
                                 //.opacity(getPercentage(geo: geometry)*getPercentage(geo: geometry))
                                 //.blur(radius: (1-getPercentage(geo: geometry))*10)
                                 .scaleEffect(getPercentage(geo: geometry))
                                 .onTapGesture{
-                                    print(index)
+                                    withAnimation{path.append(MainDestination.edit(card.id))}
                                 }
                                 .zIndex(Double(getY(geo: geometry)))
                                 
@@ -81,7 +124,7 @@ struct LoopingScrollView: View {
     
     func isSearchedCard(card: Card) -> Bool {
         var retText = false
-        var retTag = false
+        var retTag = true
         var isSearchTag = false
         if(card.name.lowercased().contains(searchText.lowercased())){
             retText = true
@@ -107,8 +150,8 @@ struct LoopingScrollView: View {
         for tag in tags {
             if(searchTag[tag.id] ?? false){
                 isSearchTag = true
-                if(card.tags.contains(tag)){
-                    retTag = true
+                if(!card.tags.contains(tag)){
+                    retTag = false
                 }
             }
         }

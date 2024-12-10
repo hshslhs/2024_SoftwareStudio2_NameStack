@@ -21,10 +21,10 @@ struct FriendNameCard_list: View {
     @Query private var allCards: [Card]
     
     var cards: [Card] {
-        allCards.filter { $0.id != cardID }
+        allCards.filter { $0.id != cardID && isSearchedCard(card: $0)}
     }
     
-    @State private var searchText: String = "Search.."
+    @State private var searchText: String = ""
 
     var body: some View {
         ZStack() {
@@ -86,7 +86,7 @@ struct FriendNameCard_list: View {
                         }
                         Spacer() .frame(width: 11)
                         Button(action: {
-                            //검색 기능
+                            //getSearchCard()
                         }) {
                             Image("search")
                                 .foregroundColor(.gray)
@@ -170,6 +170,38 @@ struct FriendNameCard_list: View {
     private func dismissKeyboard() {
          UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
      }
+    func getSearchCard(){
+       // cards = allCards.filter { $0.id != cardID && isSearchedCard(card: $0)}
+    }
+    func isSearchedCard(card: Card) -> Bool {
+        var retText = false
+        if(card.name.lowercased().contains(searchText.lowercased())){
+            retText = true
+        }
+        else if(card.phoneNumber.lowercased().contains(searchText.lowercased())){
+            retText = true
+        }
+        else if(card.mail.lowercased().contains(searchText.lowercased())){
+            retText = true
+        }
+        else if(card.organization.lowercased().contains(searchText.lowercased())){
+            retText = true
+        }
+        else if(card.school.lowercased().contains(searchText.lowercased())){
+            retText = true
+        }
+        else if(card.URL.lowercased().contains(searchText.lowercased())){
+            retText = true
+        }
+        else if(card.memo.lowercased().contains(searchText.lowercased())){
+            retText = true
+        }
+
+        if(!searchText.isEmpty){
+            return retText
+        }
+        return true
+    }
 }
 #Preview {
     ContentView()
