@@ -73,6 +73,9 @@ struct FriendNameCard_list: View {
                             .foregroundColor(Color(red: 0.67, green: 0.67, blue: 0.67))
                             .frame(width: 229, height: 22)
                             .offset(x:10)
+                            .onTapGesture {
+                                searchText = ""
+                            }
                         Spacer() .frame(width: 5)
                         
                         Button(action: {
@@ -83,7 +86,7 @@ struct FriendNameCard_list: View {
                         }
                         Spacer() .frame(width: 11)
                         Button(action: {
-                            
+                            //검색 기능
                         }) {
                             Image("search")
                                 .foregroundColor(.gray)
