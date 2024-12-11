@@ -72,8 +72,7 @@ struct QRScanner: View {
                     ).frame(height: 500).shadow(radius: 1).background(.white)
                 }
                 Text(scannedText)
-                    .padding()
-                    .foregroundColor(.white)
+
                     
                 /*} else if !DataScannerViewController.isSupported {
                     Text("It looks like this device doesn't support the DataScannerViewController")

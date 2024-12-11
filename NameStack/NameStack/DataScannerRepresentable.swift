@@ -43,7 +43,7 @@ struct DataScannerRepresentable: UIViewControllerRepresentable {
                 result.append(value)
             }
         }
-        let scannedCard = Card(name: result[0],phoneNumber: result[1],mail: result[2],organization: result[3],school: result[4],URL: result[5],memo: result[6])
+        let scannedCard = Card(name: result[0],phoneNumber: result[2],mail: result[3],organization: result[1],school: result[4],URL: result[5],memo: result[6])
         withAnimation{ path.append(MainDestination.editScanned(scannedCard))}
     }
     
