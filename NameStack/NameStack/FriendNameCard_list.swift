@@ -160,6 +160,7 @@ struct FriendNameCard_list: View {
                             
                         }.padding(.vertical)
                     }
+                    .onDelete(perform: deleteCard)
                     .offset(x:0, y:43)
                 }
             }.onTapGesture{dismissKeyboard()}
@@ -170,8 +171,8 @@ struct FriendNameCard_list: View {
     private func dismissKeyboard() {
          UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
      }
-    func getSearchCard(){
-       // cards = allCards.filter { $0.id != cardID && isSearchedCard(card: $0)}
+    func deleteCard(at offsets: IndexSet){
+        modelContext.delete(cards[offsets.first!])
     }
     func isSearchedCard(card: Card) -> Bool {
         var retText = false
