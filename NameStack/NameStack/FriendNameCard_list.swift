@@ -135,12 +135,15 @@ struct FriendNameCard_list: View {
                                 Text(namecard.name)
                                     .font(Font.custom("Urbanist", size: 25).weight(.semibold))
                                     .foregroundColor(.white)
-                                    .offset(x: -110.50, y: -14.50)
+                                    .frame(width: 200, height: 25, alignment: .leading)
+                                    .offset(x: -40, y: -14.50)
+                                    .multilineTextAlignment(.leading)
                                 
                                 Text(namecard.organization)
                                     .font(Font.custom("Urbanist", size: 16).weight(.light))
                                     .foregroundColor(.white)
-                                    .offset(x: -69, y: 18)
+                                    .frame(width: 200, height: 25, alignment: .leading)
+                                    .offset(x: -40, y: 18)
                                 
                                 HStack(){
                                     Button(action: {

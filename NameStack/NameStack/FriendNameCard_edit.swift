@@ -160,9 +160,6 @@ struct FriendNameCard_edit: View {
                                                 .inset(by: 0.5)
                                                 .stroke(.white, lineWidth: 1)
                                         )
-                                    
-                                    
-                                    
                                     HStack{
                                         
                                         Image("Tag")

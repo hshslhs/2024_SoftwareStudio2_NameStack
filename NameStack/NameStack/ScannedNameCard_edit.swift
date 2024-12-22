@@ -38,16 +38,17 @@ struct ScannedNameCard_edit: View {
     @State private var showSaveAlert = false
     //@Environment(\.dismiss) var dismiss // 모달을 닫기 위한 환경 변수
 
-    
+
     var body: some View {
             ZStack {
+                
+
                 Color.black.edgesIgnoringSafeArea(.all)
-                
-                
-                
+
                 Button(action: {
-                    path.removeLast()
-                }) {
+                    withAnimation {
+                        path.append(MainDestination.friendCards)
+                    }                }) {
                     Image("Arrow")
                         .padding(
                             EdgeInsets(top: 7.50, leading: 3.75, bottom: 7.50, trailing: 3.75)
@@ -185,7 +186,12 @@ struct ScannedNameCard_edit: View {
                     dismissKeyboard()// 키보드 밖 공간 눌렀을 때 키보드 닫기
                 }
                 .alert("저장되었습니다", isPresented: $showSaveAlert) { // Alert 표시
-                    Button("확인", role: .cancel) {}
+                    Button("확인", role: .cancel) {
+                        withAnimation {
+                            path.append(MainDestination.friendCards)
+                        }
+                    }
+
                 }
         
         
@@ -214,6 +220,7 @@ struct ScannedNameCard_edit: View {
 
     // 데이터 로드 함수
     private func loadData() {
+        isTabBarVisible=false
         name = thisCard.name
         organization = thisCard.organization
         phoneNumber = thisCard.phoneNumber
