@@ -2494,9 +2494,12 @@ input, select, textarea {
 			}
 
 		.image.main {
-			display: block;
-			margin: 3rem 0;
-			width: 100%;
+			display: inline-block;
+			float: left;
+			margin: 1rem 1rem;
+			width: 40%;
+			text-align: center;
+			box-shadow: 5px 5px 0px #2ee4bb;
 		}
 
 			.image.main img {
@@ -3261,7 +3264,7 @@ input, select, textarea {
 
 				#wrapper section > header h1 + p {
 					font-family: "Raleway", Helvetica, sans-serif;
-					font-size: 0.8rem;
+					font-size: 1.5rem;
 					letter-spacing: 0.175em;
 					line-height: 2.5;
 					text-transform: uppercase;
