@@ -64,7 +64,7 @@ struct SideBar: View {
                     isTabBarVisible = false
                     selectedTab=2//탭 뷰 안 보이게 하기 위한 코드. 필요에 따라 숫자 변경 가능
                 }) {
-                    Text("설정")
+                    Text("업데이트 정보")
                         .font(.system(size: 30))
                         .frame(maxWidth: .infinity, minHeight: 50)
                         .padding()

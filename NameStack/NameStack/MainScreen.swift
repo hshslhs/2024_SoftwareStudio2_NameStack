@@ -34,29 +34,30 @@ struct MainScreen: View {
                 LoopingScrollView(searchText: mainSearchText, searchTag: checkArray, path: $path)
                     .padding(.bottom, 30)
             }
-            ZStack(){
-                ZStack{
-                    Button(action: {
-                        withAnimation {
-                            isTabBarVisible=false//사이드 바 열릴 때 탭 바 닫기
-                            dismissKeyboard()//사이드 바 열릴 때 키보드 닫기
-                            isSidebarVisible.toggle()
-                        }
-                    }) {
-                        Image("sidebar")
-                            .padding(
-                                EdgeInsets(top: 7.50, leading: 3.75, bottom: 7.50, trailing: 3.75)
-                            )
-                    }
-                    .frame(width: 30, height: 30)
-                    .position(x: 50, y: 20);
-                    
-                    Text("NameStack")
-                        .font(Font.custom("Jura", size: 30).weight(.bold))
-                        .foregroundColor(.white)
-                        .frame(width: 175, height: 35)
-                        .position(x: UIScreen.main.bounds.width / 2, y: 20);
+            Button(action: {
+                withAnimation {
+                    isTabBarVisible=false//사이드 바 열릴 때 탭 바 닫기
+                    dismissKeyboard()//사이드 바 열릴 때 키보드 닫기
+                    isSidebarVisible.toggle()
                 }
+            }) {
+                Image("sidebar")
+                    .padding(
+                        EdgeInsets(top: 7.50, leading: 3.75, bottom: 7.50, trailing: 3.75)
+                    )
+            }
+            .frame(width: 30, height: 30)
+            .position(x: 50, y: 20);
+            
+            Text("NameStack")
+                .font(Font.custom("Jura", size: 30).weight(.bold))
+                .foregroundColor(.white)
+                .frame(width: 175, height: 35)
+                .position(x: UIScreen.main.bounds.width / 2, y: 20);
+            ZStack(){
+                
+                    
+                
                 ZStack(){
                     if(!showLooping){
                         Rectangle()
@@ -103,10 +104,20 @@ struct MainScreen: View {
                             showLooping = false
                             isTabBarVisible = false
                         }
+                        
                     })
                     .font(Font.custom("Urbanist", size: 18))
                     .foregroundColor(Color(red: 0.67, green: 0.67, blue: 0.67))
                     .frame(width: 229, height: 30)
+                    .onSubmit {
+                        // Trigger the same action as tapping the search button
+                        showLooping = true
+                        isTabBarVisible = true
+                        dismissKeyboard()
+                        print("Search triggered with Enter key")
+                        LoopingScrollView(searchText: mainSearchText, searchTag: checkArray, path: $path)
+                            .padding(.bottom, 30)
+                    }
                     
                     
                     
@@ -148,7 +159,7 @@ struct MainScreen: View {
                                 .stroke(.white, lineWidth: 2)
                         )
                 )
-                .position(x: UIScreen.main.bounds.width / 2 - 14, y: 100)
+                .position(x: UIScreen.main.bounds.width / 2 - 19, y: 100)
                     
             }.padding(.horizontal)
                 

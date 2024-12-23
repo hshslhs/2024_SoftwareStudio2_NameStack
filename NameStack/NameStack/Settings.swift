@@ -24,7 +24,7 @@ struct Settings: View {
     var body: some View {
             ZStack {
                 Color.black.edgesIgnoringSafeArea(.all)
-           
+                
                 Button(action: {
                     withAnimation {
                     isTabBarVisible=false
@@ -57,54 +57,31 @@ struct Settings: View {
                 }
                 .frame(width: 30, height: 30)
                 .position(x: UIScreen.main.bounds.width-50, y: 20);
-                
-                VStack {
 
-                    Spacer()
-                        .frame(height:60)
-                    
-                    Button(action: {
-                        //path.append(MainDestination.account)
-                        //isSidebarVisible = false
-                        //selectedTab=2//탭 뷰 안 보이게 하기 위한 코드. 필요에 따라 숫자 변경 가능
-                    }) {
-                        Text("계정 및 개인 정보")
-                            .font(.system(size: 30))
-                            .frame(maxWidth: .infinity, minHeight: 50)
-                            .padding()
-                            .foregroundColor(.white)
-                    }
+                VStack{
+                    Text("최신 버전입니다")
+                        .font(Font.custom("Roboto", size: 20).weight(.bold))
+                        .foregroundColor(.gray)
+                        .padding(.bottom, 2)
 
-                    Button(action: {
-                        //path.append(MainDestination.updateInfo)
-                        //isSidebarVisible = false
-                        //selectedTab=2//탭 뷰 안 보이게 하기 위한 코드. 필요에 따라 숫자 변경 가능
-                    }) {
-                        Text("업데이트 정보")
-                            .font(.system(size: 30))
-                            .frame(maxWidth: .infinity, minHeight: 50)
-                            .padding()
-                            .foregroundColor(.white)
-                    }
-                    
-                
-                    Spacer()
+                    Text("1.0.0")
+                        .font(Font.custom("Roboto", size: 20).weight(.bold))
+                        .foregroundColor(.gray)
+
                 }
                 
-                /*
-                .navigationDestination(for: SettingsDestination.self) { destination in
-                    switch destination {
-                    case .account:
-                        Account(isSidebarVisible: $isSidebarVisible, path:$path, isTabBarVisible: $isTabBarVisible, selectedTab: $selectedTab)
-                    case .updateInfo:
-                        UpdateInfo(isSidebarVisible: $isSidebarVisible, path:$path, isTabBarVisible: $isTabBarVisible, selectedTab:$selectedTab)
-                    }
-                }
-*/
             }
             .navigationBarBackButtonHidden(true)
+            
+                
+
+            
+        
         
         }
     
 }
 
+#Preview {
+    ContentView()
+}
