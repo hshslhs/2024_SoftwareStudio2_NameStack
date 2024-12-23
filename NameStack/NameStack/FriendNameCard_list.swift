@@ -15,6 +15,8 @@ struct FriendNameCard_list: View {
     @Binding var isTabBarVisible: Bool
     @Binding var selectedTab: Int
     
+    @State var isNewCard: Bool = true
+    
     @Environment(\.modelContext) private var modelContext
     private let cardID = UUID(uuidString: "00000000-0000-0000-0000-000000000000")!
     
@@ -28,6 +30,7 @@ struct FriendNameCard_list: View {
 
     var body: some View {
         ZStack() {
+            
             Color.black.edgesIgnoringSafeArea(.all)
             Button(action: {
                 dismissKeyboard()
@@ -111,7 +114,7 @@ struct FriendNameCard_list: View {
                     Spacer() .frame(width: 30)
                     Button(action: {
                         
-                        withAnimation{ path.append(MainDestination.edit(UUID()))}
+                        withAnimation{ path.append(MainDestination.edit(UUID(), true))}
                     }){
                         Image("plus")
                             .alignmentGuide(.trailing) { d in d[.trailing] - 50 }
@@ -147,7 +150,7 @@ struct FriendNameCard_list: View {
                                 
                                 HStack(){
                                     Button(action: {
-                                        withAnimation{path.append(MainDestination.edit(namecard.id))}
+                                        withAnimation{path.append(MainDestination.edit(namecard.id, false))}
                                     }) {
                                         Image("Arrow2")
                                             .foregroundColor(.white)

@@ -12,7 +12,13 @@ import SwiftData
 
 struct EditTag: View {
 
-    var thisCard: Card
+    var thisCardId: UUID
+    
+    @Query private var allCards: [Card]
+
+    var thisCard: [Card] {
+        allCards.filter { $0.id == thisCardId }
+    }
     @Binding var path: NavigationPath
     @Binding var isTabBarVisible: Bool
     @Binding var selectedTab: Int
@@ -116,7 +122,7 @@ struct EditTag: View {
     private func loadData() {
         for tag in tags{
             print(checkTag)
-            if(thisCard.tags.contains(tag)){
+            if(thisCard[0].tags.contains(tag)){
                 checkTag.updateValue(true, forKey: tag.id)
             }
             else{
@@ -127,12 +133,12 @@ struct EditTag: View {
     private func saveData(){
         for tag in tags{
             print(checkTag)
-            if(checkTag[tag.id]! && !thisCard.tags.contains(tag)){
-                thisCard.tags.append(tag)
+            if(checkTag[tag.id]! && !thisCard[0].tags.contains(tag)){
+                thisCard[0].tags.append(tag)
             }
-            else if(!checkTag[tag.id]! && thisCard.tags.contains(tag)){
-                if let index = thisCard.tags.firstIndex(of: tag) {
-                    thisCard.tags.remove(at: index)
+            else if(!checkTag[tag.id]! && thisCard[0].tags.contains(tag)){
+                if let index = thisCard[0].tags.firstIndex(of: tag) {
+                    thisCard[0].tags.remove(at: index)
                 }
             }
         }

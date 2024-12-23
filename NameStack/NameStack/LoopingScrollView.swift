@@ -86,7 +86,7 @@ struct LoopingScrollView: View {
                                 //.blur(radius: (1-getPercentage(geo: geometry))*10)
                                 .scaleEffect(getPercentage(geo: geometry))
                                 .onTapGesture{
-                                    withAnimation{path.append(MainDestination.edit(card.id))}
+                                    withAnimation{path.append(MainDestination.edit(card.id, false))}
                                 }
                                 .zIndex(Double(getY(geo: geometry)))
                                 

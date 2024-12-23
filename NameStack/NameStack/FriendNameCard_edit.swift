@@ -9,16 +9,14 @@ import SwiftUI
 import CoreImage.CIFilterBuiltins
 import SwiftData
 
-/*
-struct Constants {
-  static let GraysBlack: Color = .black
-}
-*/
+
 struct FriendNameCard_edit: View {
     var namecardID: UUID
+    var isNewCard: Bool
+    
     @Environment(\.modelContext) private var modelContext
     @Query private var allCards: [Card]
-    
+    private let defaultCardID = UUID(uuidString: "00000000-0000-0000-0000-000000000000")!
     var thisCard: [Card] {
         allCards.filter { $0.id == namecardID }
     }
@@ -47,21 +45,18 @@ struct FriendNameCard_edit: View {
     private let qrFilter = CIFilter.qrCodeGenerator()
     private let colorFilter = CIFilter.falseColor()
     
-    //@Environment(\.dismiss) var dismiss // 모달을 닫기 위한 환경 변수
 
     
     var body: some View {
-        //thisCard 에 특정 네임카드 넣어주기
-        /*ForEach(cards) {namecard in
-            if (namecard.UUID == namecardID){
-                thisCard = namecard
-            }
-        }*/
-        //thisCard = cards[0]
             ZStack {
                 Color.black.edgesIgnoringSafeArea(.all)
                 
                 Button(action: {
+                    if isNewCard && !thisCard.isEmpty {
+                            if let cardToDelete = thisCard.first {
+                                modelContext.delete(cardToDelete) // 현재 편집 중인 새 카드를 삭제
+                            }
+                        }
                     path.removeLast()
                 }) {
                     Image("Arrow")
@@ -148,7 +143,11 @@ struct FriendNameCard_edit: View {
                         
                         VStack(spacing: 15) {
                             Button(action:{
-                                withAnimation{ path.append(MainDestination.editTag(thisCard[0]))}
+                                if(isNewCard){
+                                    saveData()
+                                    loadData()
+                                }
+                                withAnimation{ path.append(MainDestination.editTag(namecardID))}
                             }){
                                 ZStack{
                                     Rectangle()
@@ -190,6 +189,9 @@ struct FriendNameCard_edit: View {
                         Button(action: {
                             showSaveAlert=true
                             saveData()
+                            withAnimation{path.removeLast()}
+                                
+                            
                             // Action for save button
                         }) {
                             Text("저장")
@@ -203,7 +205,10 @@ struct FriendNameCard_edit: View {
                         Spacer()
                     }
                 }
-            }   .onAppear(perform: loadData) //
+            }   .onAppear{
+                loadData()
+                isTabBarVisible = false
+                } //
                 .navigationBarBackButtonHidden(true)
                 .onTapGesture {
                     dismissKeyboard()// 키보드 밖 공간 눌렀을 때 키보드 닫기

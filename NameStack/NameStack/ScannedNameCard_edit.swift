@@ -54,7 +54,7 @@ struct ScannedNameCard_edit: View {
                             EdgeInsets(top: 7.50, leading: 3.75, bottom: 7.50, trailing: 3.75)
                         )
                 } .frame(width: 30, height: 30)
-                .position(x: 50, y: 20);
+                .position(x: 50, y: 20)
                 
                 Text("NameStack")
                     .font(Font.custom("Jura", size: 30).weight(.bold))
@@ -122,7 +122,7 @@ struct ScannedNameCard_edit: View {
                         
                         VStack(spacing: 15) {
                             Button(action:{
-                                withAnimation{ path.append(MainDestination.editTag(thisCard))}
+                                withAnimation{ path.append(MainDestination.editTag(thisCard.id))}
                             }){
                                 ZStack{
                                     Rectangle()
@@ -180,7 +180,10 @@ struct ScannedNameCard_edit: View {
                         Spacer()
                     }
                 }
-            }   .onAppear(perform: loadData) //
+            }   .onAppear{
+                loadData()
+                isTabBarVisible = false
+                }
                 .navigationBarBackButtonHidden(true)
                 .onTapGesture {
                     dismissKeyboard()// 키보드 밖 공간 눌렀을 때 키보드 닫기
@@ -196,6 +199,7 @@ struct ScannedNameCard_edit: View {
         
         
     }
+    
     private func dismissKeyboard() {
          UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
      }
@@ -232,6 +236,7 @@ struct ScannedNameCard_edit: View {
     }
     
 }
+
 
 #Preview {
     ContentView()

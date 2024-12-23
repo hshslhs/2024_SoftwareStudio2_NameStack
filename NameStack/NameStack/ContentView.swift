@@ -18,9 +18,9 @@ enum MainDestination: Hashable {
     case account
     case updateInfo
     
-    case edit(UUID)
+    case edit(UUID, Bool)
     case editScanned(Card)
-    case editTag(Card)
+    case editTag(UUID)
 }
 
 enum TabbedItems: Int, CaseIterable{
@@ -94,13 +94,13 @@ struct ContentView: View {
                     case .account:
                         Account(isSidebarVisible: $isSidebarVisible, path:$path, isTabBarVisible: $isTabBarVisible, selectedTab: $selectedTab)
                     case .updateInfo:
-                        UpdateInfo(isSidebarVisible: $isSidebarVisible, path:$path, isTabBarVisible: $isTabBarVisible, selectedTab:$selectedTab)
-                    case .edit(let namecardID):
-                        FriendNameCard_edit(namecardID: namecardID, path:$path, isTabBarVisible: $isTabBarVisible, selectedTab: $selectedTab)
+                        UpdateInfo(isSidebarVisible: $isSidebarVisible, path:$path, isTabBarVisible: $isTabBarVisible, selectedTab:$selectedTab) 
+                    case .edit(let namecardID, let isNewCard):
+                        FriendNameCard_edit(namecardID: namecardID, isNewCard: isNewCard, path:$path, isTabBarVisible: $isTabBarVisible, selectedTab: $selectedTab)
                     case .editScanned(let namecard):
                         ScannedNameCard_edit(thisCard: namecard, path:$path, isTabBarVisible: $isTabBarVisible, selectedTab: $selectedTab)
-                    case .editTag(let namecard):
-                        EditTag(thisCard: namecard ,path:$path, isTabBarVisible: $isTabBarVisible, selectedTab: $selectedTab)
+                    case .editTag(let thisCardId):
+                        EditTag(thisCardId: thisCardId ,path:$path, isTabBarVisible: $isTabBarVisible, selectedTab: $selectedTab)
                     }
                     
                         
