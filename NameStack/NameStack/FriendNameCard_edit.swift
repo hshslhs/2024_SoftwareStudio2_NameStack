@@ -72,6 +72,20 @@ struct FriendNameCard_edit: View {
                     .frame(width: 175, height: 35)
                     .position(x: UIScreen.main.bounds.width / 2, y: 20);
                 
+                Button(action: {
+                    if let cardToDelete = thisCard.first {
+                        modelContext.delete(cardToDelete) // 현재 편집 중인 새 카드를 삭제
+                    }
+                    withAnimation{path.removeLast()}
+                }) {
+                    Image("delete")
+                        .padding(
+                            EdgeInsets(top: 7.50, leading: 3.75, bottom: 7.50, trailing: 3.75)
+                        )
+                }
+                .frame(width: 30, height: 30)
+                .position(x: UIScreen.main.bounds.width-50, y: 20);
+                
                 VStack(spacing: 20) {
                     
                     Spacer()
@@ -189,7 +203,7 @@ struct FriendNameCard_edit: View {
                         Button(action: {
                             showSaveAlert=true
                             saveData()
-                            withAnimation{path.removeLast()}
+                            //withAnimation{path.removeLast()}
                                 
                             
                             // Action for save button
