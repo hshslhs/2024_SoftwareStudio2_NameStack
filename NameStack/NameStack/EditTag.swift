@@ -91,8 +91,8 @@ struct EditTag: View {
                                 }
                             }
                             
-                        }.frame(width: 350, height: 600)
-                    }
+                        }
+                    }.frame(width: 350, height: 600)
                         
                         
                         // Save Button
