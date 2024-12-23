@@ -203,7 +203,7 @@ struct FriendNameCard_edit: View {
                         Button(action: {
                             showSaveAlert=true
                             saveData()
-                            //withAnimation{path.removeLast()}
+                            path.append(MainDestination.friendCards)
                                 
                             
                             // Action for save button
