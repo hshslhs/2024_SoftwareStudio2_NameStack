@@ -63,31 +63,7 @@ struct QRCode: View {
                 Spacer()
                     .frame(height:30)
                 
-                Button(action: {
-                    // 새로고침 기능이나 원하는 동작 추가
-                    print("QR Code 새로고침 버튼 눌림")
-                }) {
-                    HStack {
-                        
-                        Text("QR Code 새로고침")
-                            .font(
-                                Font.custom("Montserrat", size: 14)
-                                    .weight(.medium)
-                            )
-                            .multilineTextAlignment(.center)
-                            .foregroundColor(.white)
-                            .frame(width: 218, height: 24, alignment: .center)
-                    }
-                    .frame(width: 179, height: 33, alignment: .center)
-                    .background(Constants.GraysBlack)
-                    .cornerRadius(30)
-                    .shadow(color: Color(red: 0.18, green: 0.18, blue: 0.18).opacity(0.15), radius: 7.5, x: 0, y: 4)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 30)
-                            .inset(by: 0.5)
-                            .stroke(.white, lineWidth: 1)
-                    )
-                }
+           
                 Spacer()
                 
             }
