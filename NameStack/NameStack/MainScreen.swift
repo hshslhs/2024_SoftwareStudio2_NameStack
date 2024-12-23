@@ -34,68 +34,76 @@ struct MainScreen: View {
                 LoopingScrollView(searchText: mainSearchText, searchTag: checkArray, path: $path)
                     .padding(.bottom, 30)
             }
-            Button(action: {
-                withAnimation {
-                    isTabBarVisible=false//사이드 바 열릴 때 탭 바 닫기
-                    dismissKeyboard()//사이드 바 열릴 때 키보드 닫기
-                    isSidebarVisible.toggle()
-                }
-            }) {
-                Image("sidebar")
-                    .padding(
-                        EdgeInsets(top: 7.50, leading: 3.75, bottom: 7.50, trailing: 3.75)
-                    )
-            }
-            .frame(width: 30, height: 30)
-            .position(x: 50, y: 20);
-            
-            Text("NameStack")
-                .font(Font.custom("Jura", size: 30).weight(.bold))
-                .foregroundColor(.white)
-                .frame(width: 175, height: 35)
-                .position(x: UIScreen.main.bounds.width / 2, y: 20);
-            ZStack(){
-                
+            ZStack{
+                ZStack{
+                    Button(action: {
+                        withAnimation {
+                            isTabBarVisible=false//사이드 바 열릴 때 탭 바 닫기
+                            dismissKeyboard()//사이드 바 열릴 때 키보드 닫기
+                            isSidebarVisible.toggle()
+                        }
+                    }) {
+                        Image("sidebar")
+                            .padding(
+                                EdgeInsets(top: 7.50, leading: 3.75, bottom: 7.50, trailing: 3.75)
+                            )
+                    }
+                    .frame(width: 30, height: 30)
+                    .position(x: 50, y: 20);
                     
-                
+                    Text("NameStack")
+                        .font(Font.custom("Jura", size: 30).weight(.bold))
+                        .foregroundColor(.white)
+                        .frame(width: 175, height: 35)
+                        .position(x: UIScreen.main.bounds.width / 2, y: 20);
+                }
                 ZStack(){
-                    if(!showLooping){
-                        Rectangle()
-                            .frame(width:310, height: 417)
-                            .foregroundColor(Color(UIColor(red: 0xFF/255, green: 0xFF/255, blue: 0xFF/255, alpha: 1.0)))
-                            .opacity(0.06)
-                        ScrollView(.vertical){
-                            ForEach(tags) { tag in
-                                VStack(spacing: 20){
-                                    HStack(){
-                                        ZStack() {
-                                            Rectangle()
-                                                .foregroundColor(paletteColors[tag.colorIndex].opacity(0.2))
-                                                .frame(width: 260, height: 25)
-                                                .cornerRadius(6)
-                                            Text(tag.name)
-                                                .font(Font.custom("Urbanist", size: 15).weight(.bold))
-                                                .foregroundColor(.white)
-                                        }
-                                        
-                                        Button(action: {
-                                            //명함의 태그 별 ox 여부 체크
-                                            checkArray[tag.id]! = !checkArray[tag.id]!
-                                        }){
-                                            if(!(checkArray[tag.id] ?? false)){
-                                                Image("uncheck")
-                                            }else{
-                                                Image("checkfill")
+                    ZStack{
+                        if !showLooping {
+                            // 배경 Rectangle
+                            Rectangle()
+                                .frame(width: 310, height: 320)
+                                .foregroundColor(Color(UIColor(red: 0xFF/255, green: 0xFF/255, blue: 0xFF/255, alpha: 1.0)))
+                                .opacity(0.06)
+                            
+                            // ScrollView를 Rectangle 안에 배치
+                            ScrollView {
+                                VStack(spacing: 10) {
+                                    ForEach(tags) { tag in
+                                        HStack {
+                                            ZStack {
+                                                Rectangle()
+                                                    .foregroundColor(paletteColors[tag.colorIndex].opacity(0.2))
+                                                    .frame(width: 260, height: 25)
+                                                    .cornerRadius(6)
+                                                Text(tag.name)
+                                                    .font(Font.custom("Urbanist", size: 15).weight(.bold))
+                                                    .foregroundColor(.white)
+                                            }
+                                            
+                                            Button(action: {
+                                                // 명함의 태그 별 OX 여부 체크
+                                                checkArray[tag.id]! = !(checkArray[tag.id] ?? false)
+                                            }) {
+                                                if !(checkArray[tag.id] ?? false) {
+                                                    Image("uncheck")
+                                                } else {
+                                                    Image("checkfill")
+                                                }
                                             }
                                         }
                                     }
-                                    
                                 }
-                                
-                            }.frame(width: 290, height: 400)
+                                .padding(.horizontal)
+                                .frame(width: 290) // ScrollView 너비 조정
+                            }
+                            .frame(width: 310, height: 320) // ScrollView의 크기를 Rectangle에 맞춤
                         }
                     }
                 }
+                .padding(.horizontal)
+                .position(x: 185, y:290)
+                
                 HStack(){
                     
                     TextField("Search..", text : $mainSearchText, onEditingChanged: {
@@ -159,7 +167,7 @@ struct MainScreen: View {
                                 .stroke(.white, lineWidth: 2)
                         )
                 )
-                .position(x: UIScreen.main.bounds.width / 2 - 19, y: 100)
+                .position(x: UIScreen.main.bounds.width / 2 - 14, y: 100)
                     
             }.padding(.horizontal)
                 
@@ -174,7 +182,7 @@ struct MainScreen: View {
                     dismissKeyboard()
                 }
                 .onAppear{initializeCheckArray()}
-            
+                .onDisappear{showLooping=true}
             
     }
     
